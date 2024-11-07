@@ -2,10 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const { UserRouter } = require('./routes/user');
-const { AdminRouter } = require('./routes/admin');
-const { connectDB } = require('./config/db');
-const { CompanyRouter } = require('./routes/company');
+const { connectDB } = require('./config/db'); // Import connectDB here
 
 dotenv.config();
 
@@ -16,20 +13,28 @@ app.use(cors({
    credentials: true
 }));
 app.use(cookieParser());
-app.use('/api', UserRouter);
-app.use('/api/admin', AdminRouter); 
-app.use('/api/', CompanyRouter);
 
-app.get('/', (req, res) => {
-  res.send('Hello, Express!');
+connectDB().then(() => {
+  console.log('Database connection established');
+
+  // Import routes after the database connection is ready
+  const { UserRouter } = require('./routes/user');
+  const { AdminRouter } = require('./routes/admin');
+  const { CompanyRouter } = require('./routes/company');
+
+  app.use('/api', UserRouter);
+  app.use('/api/admin', AdminRouter);
+  app.use('/api/', CompanyRouter);
+
+  app.get('/', (req, res) => {
+    res.send('Hello, Express!');
+  });
+app.listen(process.env.PORT,   ()=> {
+  console.log('Server is running on port 3000');
+})
+module.exports = app;
+}).catch((error) => {
+  console.error('Failed to connect to the database', error);
+  process.exit(1);
 });
 
-// Connect to the database 
-connectDB()
-  .then(() => console.log('Database connected'))
-  .catch((error) => {
-    console.error('Database connection failed', error);
-    process.exit(1);
-  });
-
-module.exports = app;
