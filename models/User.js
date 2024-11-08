@@ -2,10 +2,6 @@ const { getAuthDB } = require('../config/db');
 const bcrypt = require('bcrypt');
 
 const User = {
-  findAll: async () => {
-    const db = getAuthDB();     
-    return db.collection('users').find({}).toArray();
-  },
 
   findByEmail: async (email) => {
     const db = getAuthDB(); 

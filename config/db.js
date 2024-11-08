@@ -22,18 +22,18 @@
     }
   };
 
-  const getAuthDB = () => {
-    if (!client) {
-      throw new Error('Client is not connected to the database');
-    }
-    return client.db('auth');
-  };
+  // const getAuthDB = () => {
+  //   if (!client) {
+  //     throw new Error('Client is not connected to the database');
+  //   }
+  //   return client.db('auth');
+  // };
   
-  const getCustomerDB = () => {
-    if (!client) {
-      throw new Error('Client is not connected to the database');
-    }
-    return client.db('customer');
-  };
+  // const getCustomerDB = () => {
+  //   if (!client) {
+  //     throw new Error('Client is not connected to the database');
+  //   }
+  //   return client.db('customer');
+  // };
 
-  module.exports = { connectDB, getAuthDB, getCustomerDB };
+  module.exports = { connectDB };

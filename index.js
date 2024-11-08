@@ -3,6 +3,11 @@ const { config } = require('dotenv');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { connectDB } = require('./config/db');
+const { UserRouter } = require('./routes/user');
+const { AdminRouter } = require('./routes/admin');
+const { CompanyRouter } = require('./routes/company');
+
+
 
 config();
 
@@ -16,20 +21,17 @@ app.use(cookieParser());
     await connectDB(); // Ensure the DB connection is established
     console.log('Database connected. Initializing routes...');
 
-    // Import routes after DB connection is established
-    const { UserRouter } = require('./routes/user');
-    const { AdminRouter } = require('./routes/admin');
-    const { CompanyRouter } = require('./routes/company');
-
-    app.use('/api', UserRouter);
-    app.use('/api/admin', AdminRouter);
-    app.use('/api', CompanyRouter);
-
   } catch (error) {
     console.error('Failed to connect to the database:', error);
     process.exit(1); // Exit process if connection fails
   }
 })();
+
+    // Import routes after DB connection is established
+    app.use('/api', UserRouter);
+    app.use('/api/admin', AdminRouter);
+    app.use('/api', CompanyRouter);
+
 
 app.get('/', (req, res) => {
   res.send('Hello, Express!');

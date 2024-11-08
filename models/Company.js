@@ -1,19 +1,7 @@
-// models/Company.js
-const { getCustomerDB } = require('../config/db');
+
 const { ObjectId } = require('mongodb');
 
-
-
 const Company = {
-  findAll: async () => {
-    try {
-      const db = getCustomerDB();
-      return await db.collection('companies').find({}).toArray();
-    } catch (error) {
-      throw new Error('Error fetching companies: ' + error.message);
-    }
-  },
-
   findById: async (id) => {
     try {
       return await db.collection('companies').findOne({ _id: new ObjectId(id) });
