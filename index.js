@@ -4,10 +4,6 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { connectDB } = require('./config/db');
 
-const { UserRouter } = require('./routes/user');
-const { AdminRouter } = require('./routes/admin');
-const { CompanyRouter } = require('./routes/company');
-
 config();
 
 const app = express();
@@ -20,16 +16,16 @@ app.use(cookieParser());
     await connectDB(); // Ensure the DB connection is established
     console.log('Database connected. Starting the server...');
     
-    // Import routes only after DB connection is established
-  
+    // After DB connection is established
+    const { UserRouter } = require('./routes/user');
+    const { AdminRouter } = require('./routes/admin');
+    const { CompanyRouter } = require('./routes/company');
     
     app.use('/api', UserRouter);
     app.use('/api/admin', AdminRouter);
     app.use('/api', CompanyRouter);
 
-    app.listen(3000, () => {
-      console.log('Server is running on http://localhost:3000');
-    });
+   
   } catch (error) {
     console.error('Failed to connect to the database:', error);
     process.exit(1); // Exit process if connection fails
@@ -39,6 +35,9 @@ app.use(cookieParser());
 app.get('/', (req, res) => {
   res.send('Hello, Express!');
 });
+// app.listen(3000, () => {
+//   console.log('Server is running on http://localhost:3000');
+// });
 
 // Export the app
 module.exports = app;
