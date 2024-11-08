@@ -1,10 +1,10 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const { connectDB } = require('./config/db');
+import express, { json } from 'express';
+import { config } from 'dotenv';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import { connectDB } from './config/db';
 
-dotenv.config();
+config();
 
 const app = express();
 
@@ -13,7 +13,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
-app.use(express.json());
+app.use(json());
 app.use(cookieParser());
 
 connectDB().then(() => {
@@ -23,17 +23,17 @@ connectDB().then(() => {
   process.exit(1);
 });
 
-const { UserRouter } = require('./routes/user');
-const { AdminRouter } = require('./routes/admin');
-const { CompanyRouter } = require('./routes/company');
+// const { UserRouter } = require('./routes/user');
+// const { AdminRouter } = require('./routes/admin');
+// const { CompanyRouter } = require('./routes/company');
 
-app.use('/api', UserRouter);
-app.use('/api/admin', AdminRouter);
-app.use('/api/', CompanyRouter);
+// app.use('/api', UserRouter);
+// app.use('/api/admin', AdminRouter);
+// app.use('/api/', CompanyRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello, Express!');
 });
 
 // handle the HTTP server
-module.exports = app;
+export default app;
