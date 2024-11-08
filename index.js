@@ -19,13 +19,15 @@ app.use(cookieParser());
 
 (async () => {
   try {
-    await connectDB(); // Ensure the DB connection is established
-    console.log("Database connected. Initializing routes...");
+    await connectDB(); // Connect to the database
+    console.log("Database connected.");
 
-    const { UserRouter } = require("./routes/user");
-    const { AdminRouter } = require("./routes/admin");
-    const { CompanyRouter } = require("./routes/company");
+    // Import routes after connection is established
+    const UserRouter = require("./routes/user");
+    const AdminRouter = require("./routes/admin");
+    const CompanyRouter = require("./routes/company");
 
+    // Register routes
     app.use("/api", UserRouter);
     app.use("/api/admin", AdminRouter);
     app.use("/api", CompanyRouter);
@@ -34,12 +36,13 @@ app.use(cookieParser());
     process.exit(1); // Exit process if connection fails
   }
 })();
-
-// Import routes after DB connection is established
-
+app.listen(3000, () => {
+  
+})
+// Main route
 app.get("/", (req, res) => {
   res.send("Hello, Express!");
 });
 
-// Do not use app.listen() for Vercel deployment
-module.exports = app; // Ensure the app is exported
+// Ensure the app is exported
+module.exports = app;

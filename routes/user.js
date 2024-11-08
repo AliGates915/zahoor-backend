@@ -81,7 +81,7 @@ router.get('/users', async (req, res) => {
   }
 });
 
-module.exports = { UserRouter: router };
+module.exports =  router;
 
 
 

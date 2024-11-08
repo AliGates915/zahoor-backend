@@ -73,4 +73,4 @@ router.delete('/companies/:id', async (req, res) => {
   }
 });
 
-module.exports = { CompanyRouter: router };
+module.exports = router ;
