@@ -20,7 +20,10 @@ app.use(cookieParser());
   try {
     await connectDB(); // Ensure the DB connection is established
     console.log('Database connected. Initializing routes...');
-
+    
+    app.use('/api', UserRouter);
+    app.use('/api/admin', AdminRouter);
+    app.use('/api', CompanyRouter);
   } catch (error) {
     console.error('Failed to connect to the database:', error);
     process.exit(1); // Exit process if connection fails
@@ -28,9 +31,7 @@ app.use(cookieParser());
 })();
 
     // Import routes after DB connection is established
-    app.use('/api', UserRouter);
-    app.use('/api/admin', AdminRouter);
-    app.use('/api', CompanyRouter);
+
 
 
 app.get('/', (req, res) => {
