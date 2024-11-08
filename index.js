@@ -4,6 +4,10 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { connectDB } = require('./config/db');
 
+const { UserRouter } = require('./routes/user');
+const { AdminRouter } = require('./routes/admin');
+const { CompanyRouter } = require('./routes/company');
+
 config();
 
 const app = express();
@@ -17,9 +21,7 @@ app.use(cookieParser());
     console.log('Database connected. Starting the server...');
     
     // Import routes only after DB connection is established
-    const { UserRouter } = require('./routes/user');
-    const { AdminRouter } = require('./routes/admin');
-    const { CompanyRouter } = require('./routes/company');
+  
     
     app.use('/api', UserRouter);
     app.use('/api/admin', AdminRouter);
