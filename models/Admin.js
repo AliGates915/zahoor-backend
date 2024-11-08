@@ -2,11 +2,12 @@
 const { getAuthDB } = require('../config/db');
 const bcrypt = require('bcrypt');
 
-const db = getAuthDB();
 
 const Admin = {
   findAdmin: async () => {
-    return db.collection('admins').findOne({});
+    
+  const db = getAuthDB();
+    return db.collection('admins').find({}).toArray();
   },
 
   createAdmin: async (email, password) => {

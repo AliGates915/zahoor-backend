@@ -1,8 +1,12 @@
-import express, { json } from 'express';
-import { config } from 'dotenv';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
-import { connectDB } from './config/db';
+// index.js
+const express = require('express');
+const {config} = require('dotenv');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const { connectDB } = require('./config/db');
+const { UserRouter } = require('./routes/user');
+const { AdminRouter } = require('./routes/admin');
+const { CompanyRouter } = require('./routes/company');
 
 config();
 
@@ -13,27 +17,33 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
-app.use(json());
+app.use(express.json());
 app.use(cookieParser());
 
-connectDB().then(() => {
-  console.log('Database connection established');
-}).catch((error) => {
-  console.error('Failed to connect to the database', error);
-  process.exit(1);
-});
+(async () => {
+  try {
+    await connectDB(); // Ensure the DB connection is established
+    console.log('Database connected. Starting the server...');
 
-// const { UserRouter } = require('./routes/user');
-// const { AdminRouter } = require('./routes/admin');
-// const { CompanyRouter } = require('./routes/company');
+    // Start the server only after the database connection
+    app.listen(3000, () => {
+      console.log('Server is running on http://localhost:3000');
+    });
 
-// app.use('/api', UserRouter);
-// app.use('/api/admin', AdminRouter);
-// app.use('/api/', CompanyRouter);
+    // Import routes after connection
+    app.use('/api', UserRouter);
+    app.use('/api/admin', AdminRouter);
+    app.use('/api/', CompanyRouter);
+  } catch (error) {
+    console.error('Failed to connect to the database:', error);
+    process.exit(1); // Exit process if connection fails
+  }
+})();
+
 
 app.get('/', (req, res) => {
   res.send('Hello, Express!');
 });
 
 // handle the HTTP server
-export default app;
+module.exports = app;

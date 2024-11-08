@@ -28,7 +28,7 @@
     }
     return client.db('auth');
   };
-
+  
   const getCustomerDB = () => {
     if (!client) {
       throw new Error('Client is not connected to the database');
